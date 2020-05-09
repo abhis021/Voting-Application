@@ -1,14 +1,5 @@
 import tkinter as tk
-#from tkinter import messagebox
 from tkinter import simpledialog
-
-#def text_box():
-#    if tk.messagebox.askokcancel(title="Voting App", message="Enter no. of Candidates"):
-#        root.destroy()
-#root=tk.Tk()
-#button=tk.Button(root,text="Press the Button", command =text_box)
-#button.pack()
-#root.mainloop()
 
 application_window = tk.Tk()
 
@@ -22,6 +13,14 @@ else:
 
 answer = simpledialog.askstring("Candidate names", "What is the name of candidate ?",
                                  parent=application_window)
+if answer is not None:
+    print("Name of candidate ", answer)
+else:
+    print("No Name available ?")
+
+answer = simpledialog.askinteger("Candidate age", "What is the age of candidate ?",
+                                 parent=application_window,
+                                 minvalue=18, maxvalue=76)
 if answer is not None:
     print("Age of candidate ", answer)
 else:
