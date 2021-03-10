@@ -31,5 +31,9 @@ answer = simpledialog.askinteger("Candidate Income", "What is candidate's Income
                                minvalue=0, maxvalue=100000)
 if answer is not None:
     print("Your Income is ", answer)
-else:
+elif answer == 0:
     print("You don't have an Income, how do you propose that you will fund yourself for election?")
+
+else:
+    print("nigga")
+    
