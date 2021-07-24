@@ -140,10 +140,73 @@ class VoteApplication:
         self.settitle()
         # updating status
         self.status.set("New File Created")
+    def openfile(self,*args):
+        try:
+            self.filename = filedialog.askopenfilename(title = "Select File", filetypes = (("All Files","*.*"),("Text Files","*.txt"),("Python Files","*.py")))
 
+            if self.filename:
+                infile = open(self.filename, "r")
+                self.txtarea.delete("1.0", END)
+                for line in infile:
+                    self.txtarea.insert(END, line)
+                infile.close()
 
+                self.settitle()
+                self.status.set("Opened Successfully")
+        except Exception as e:
+            messagebox.showerror("Exception", e)
 
+    def savefile(self,*args):
+        try:
+            if self.filename:
+                data = self.txtarea.get("1.0", END)
 
+                outfile = open(self.filename, "w")
+
+                outfile.write(data)
+
+                outfile.close()
+
+                self.settitle()
+
+                self.status.set("Saved Successfully")
+            else:
+                self.saveasfile()
+        except Exception as e:
+            messagebox.showerror("Exception", e)
+    def saveasfile(self, *args):
+        try:
+            untitledfile = filedialog.asksaveasfilename(title = "Save File As", defaultextension = "txt", initialfile = "Untitled.txt", filetypes = (("All Files","*.*"),("Text Files","*.txt"),("Python Files","*.py")))
+            data = self.txtarea.get("1.0", END)
+
+            outfile = open(untitledfile, "w")
+            outfile.write(data)
+            outfile.close()
+
+            self.filename = untitledfile
+            self.settitle()
+            self.status.set("Saved Successfully")
+        except Exception as e:
+            messagebox.showerror("Exception", e)
+    def exit(self, *args):
+        op = messagebox.askyesno("Warning", "Your Unsaved Data May be Lost!")
+        if op>0:
+            self.root.destroy()
+        else:
+            return
+    def cut(self, *args):
+        self.txtarea.event_generate("<<Cut>>")
+    def copy(self, *args):
+        self.txtarea.event_generate("<<Copy>>")
+    def paste(self, *args):
+        self.txtarea.event_generate("<<Paste>>")
+    def undo(self, *args):
+        try:
+            if self.filename:
+                self.txtarea.event_generate("1.0", END=True)
+                infile = open(self.filename,"r")
+                for line in infile:
+                    self.txtarea.insert(END, line)
 
     def shortcuts(self):
         # Binding Ctrl+n to newfile funtion
