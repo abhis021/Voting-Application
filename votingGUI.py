@@ -47,7 +47,7 @@ class VoteApplication:
 
         self.settitle()
 
-        self.staturbar = Label(self.root, textvariable=self.status, font=(
+        self.statusbar = Label(self.root, textvariable=self.status, font=(
             "times new roman", 15, "bold"), bd=2, relief=GROOVE)
 
         self.statusbar.pack(side=BOTTOM, fill=BOTH)
@@ -207,6 +207,22 @@ class VoteApplication:
                 infile = open(self.filename,"r")
                 for line in infile:
                     self.txtarea.insert(END, line)
+                infile.close()
+
+                self.settitle()
+
+                self.status.set("Undone Successfully")
+            else:
+                self.txtarea.delete("1.0", END)
+                self.filename = None
+                self.settitle()
+                self.status.set("Undone Successfully")
+        except Exception as e:
+            messagebox.showerror("Exception", e)
+    def infoabout(self):
+        messagebox.showinfo("About Voting Application", "A simple vote processing application that stores votes.")
+            
+
 
     def shortcuts(self):
         # Binding Ctrl+n to newfile funtion
