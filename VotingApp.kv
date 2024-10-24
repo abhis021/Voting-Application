@@ -1,0 +1,65 @@
+<VotingApp>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 20
+
+    Label:
+        text: "Voting Application"
+        font_size: 24
+        size_hint_y: None
+        height: 40
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        spacing: 10
+
+        Button:
+            text: "Vote Candidate 1"
+            on_press: root.vote_candidate('candidate_1')
+
+        Label:
+            text: str(root.candidate_1_votes)
+            size_hint_x: None
+            width: 40
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        spacing: 10
+
+        Button:
+            text: "Vote Candidate 2"
+            on_press: root.vote_candidate('candidate_2')
+
+        Label:
+            text: str(root.candidate_2_votes)
+            size_hint_x: None
+            width: 40
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        spacing: 10
+
+        Button:
+            text: "Vote Candidate 3"
+            on_press: root.vote_candidate('candidate_3')
+
+        Label:
+            text: str(root.candidate_3_votes)
+            size_hint_x: None
+            width: 40
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        spacing: 10
+
+        Button:
+            text: "Reset Votes"
+            on_press: root.candidate_1_votes = 0; root.candidate_2_votes = 0; root.candidate_3_votes = 0
