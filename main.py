@@ -1,39 +1,74 @@
-import tkinter as tk
-from tkinter import simpledialog
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import NumericProperty, BooleanProperty
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 
-application_window = tk.Tk()
 
-answer = simpledialog.askinteger("Voting Application", "Enter the number of candidates: ",
-                                parent=application_window,
-                                minvalue=0, maxvalue=100)
-if answer is not None:
-    print("The number of Candidates: ", answer)
-else:
-    print("There are no candidates ?")
+class VotingApp(BoxLayout):
+    candidate_1_votes = NumericProperty(0)
+    candidate_2_votes = NumericProperty(0)
+    candidate_3_votes = NumericProperty(0)
 
-answer = simpledialog.askstring("Candidate names", "What is the name of candidate ?",
-                                 parent=application_window)
-if answer is not None:
-    print("Name of candidate ", answer)
-else:
-    print("No Name available ?")
+    # Track users who have already voted
+    voters = set()
+    # Property to toggle admin mode
+    is_admin = BooleanProperty(False)
 
-answer = simpledialog.askinteger("Candidate age", "What is the age of candidate ?",
-                                 parent=application_window,
-                                 minvalue=18, maxvalue=76)
-if answer is not None:
-    print("Age of candidate ", answer)
-else:
-    print("No age available ?")
+    def vote_candidate(self, candidate, voter_id):
+        if voter_id in self.voters:
+            self.show_popup("You have already voted!")
+            return
 
-answer = simpledialog.askinteger("Candidate Income", "What is candidate's Income?",
-                               parent=application_window,
-                               minvalue=0, maxvalue=100000)
-if answer is not None:
-    print("Your Income is ", answer)
-elif answer == 0:
-    print("You don't have an Income, how do you propose that you will fund yourself for election?")
+        if candidate == 'candidate_1':
+            self.candidate_1_votes += 1
+        elif candidate == 'candidate_2':
+            self.candidate_2_votes += 1
+        elif candidate == 'candidate_3':
+            self.candidate_3_votes += 1
 
-else:
-    print("nigga")
-    
+        # Add the voter to the set to prevent multiple voting
+        self.voters.add(voter_id)
+
+    def show_popup(self, message):
+        popup = Popup(title='Alert',
+                      content=Label(text=message),
+                      size_hint=(None, None), size=(400, 200))
+        popup.open()
+
+    def reset_votes(self):
+        self.candidate_1_votes = 0
+        self.candidate_2_votes = 0
+        self.candidate_3_votes = 0
+        self.voters.clear()  # Clear voter tracking
+
+    def open_admin_login(self):
+        # Create a popup for admin login
+        content = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        password_input = TextInput(hint_text='Enter Admin Password', password=True, multiline=False)
+        login_button = Button(text='Login', on_press=lambda x: self.admin_login(password_input.text))
+
+        content.add_widget(password_input)
+        content.add_widget(login_button)
+
+        popup = Popup(title='Admin Login', content=content, size_hint=(None, None), size=(400, 200))
+        popup.open()
+
+    def admin_login(self, password):
+        # Check password (you can change it to whatever you like)
+        if password == "alpsandroid":
+            self.is_admin = True
+            self.show_popup("Admin mode enabled")
+        else:
+            self.show_popup("Incorrect password!")
+
+
+class VotingAppApp(App):
+    def build(self):
+        return VotingApp()
+
+
+if __name__ == "__main__":
+    VotingAppApp().run()

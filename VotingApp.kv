@@ -15,9 +15,20 @@
         height: 50
         spacing: 10
 
+        TextInput:
+            id: voter_id
+            hint_text: "Enter your name or ID"
+            multiline: False
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        spacing: 10
+
         Button:
             text: "Vote Candidate 1"
-            on_press: root.vote_candidate('candidate_1')
+            on_press: root.vote_candidate('candidate_1', voter_id.text)
 
         Label:
             text: str(root.candidate_1_votes)
@@ -32,7 +43,7 @@
 
         Button:
             text: "Vote Candidate 2"
-            on_press: root.vote_candidate('candidate_2')
+            on_press: root.vote_candidate('candidate_2', voter_id.text)
 
         Label:
             text: str(root.candidate_2_votes)
@@ -47,7 +58,7 @@
 
         Button:
             text: "Vote Candidate 3"
-            on_press: root.vote_candidate('candidate_3')
+            on_press: root.vote_candidate('candidate_3', voter_id.text)
 
         Label:
             text: str(root.candidate_3_votes)
@@ -61,5 +72,19 @@
         spacing: 10
 
         Button:
+            text: "Admin Login"
+            on_press: root.open_admin_login()
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 50
+        spacing: 10
+
+        Button:
             text: "Reset Votes"
-            on_press: root.candidate_1_votes = 0; root.candidate_2_votes = 0; root.candidate_3_votes = 0
+            on_press: root.reset_votes()
+            opacity: 1 if root.is_admin else 0
+            disabled: not root.is_admin
+            size_hint_y: None
+            height: 50
