@@ -74,6 +74,14 @@
         Button:
             text: "Admin Login"
             on_press: root.open_admin_login()
+            opacity: 1 if not root.is_admin else 0
+            disabled: root.is_admin
+
+        Button:
+            text: "Admin Logout"
+            on_press: root.admin_logout()
+            opacity: 1 if root.is_admin else 0
+            disabled: not root.is_admin
 
     BoxLayout:
         orientation: 'horizontal'
